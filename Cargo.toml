@@ -1,6 +1,6 @@
 [package]
 name = "oscilloscope"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Alexey Voznyuk <me@swizard.info>"]
 description = "Simple oscilloscope for RaspberryPi with rpi_lfa framework"
 edition = "2018"

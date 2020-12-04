@@ -1,4 +1,5 @@
 use std::{
+    thread,
     time::{
         Instant,
         Duration,
@@ -114,8 +115,10 @@ fn main() -> Result<(), Error> {
 
             mcp3008::Session::Initializing(initializing) =>
                 match initializing.probe().map_err(Error::Mcp3008)? {
-                    mcp3008::InitializingOp::Idle(initializing) =>
-                        mcp3008_session = initializing.into(),
+                    mcp3008::InitializingOp::Idle(initializing) => {
+                        mcp3008_session = initializing.into();
+                        thread::yield_now();
+                    },
                     mcp3008::InitializingOp::Ready(ready) => {
                         log::debug!("mcp3008 ready");
                         mcp3008_session = ready.into();
@@ -127,8 +130,10 @@ fn main() -> Result<(), Error> {
 
             mcp3008::Session::Probing(probing) =>
                 match probing.poll().map_err(Error::Mcp3008)? {
-                    mcp3008::ProbingOp::Idle(probing) =>
-                        mcp3008_session = probing.into(),
+                    mcp3008::ProbingOp::Idle(probing) => {
+                        mcp3008_session = probing.into();
+                        thread::yield_now();
+                    },
                     mcp3008::ProbingOp::Done { channel, value, ready, } if channel == mcp3008_channel => {
                         channel_voltage_read = Some(value);
                         mcp3008_session = ready.into();
@@ -180,6 +185,7 @@ fn main() -> Result<(), Error> {
                 if ac_samples == 0 {
                     log::info!("no samples collected yet");
                 } else {
+                    log::info!("collected {} samples", ac_samples);
                     log::info!(" - avg frequency: {:?}", Hertz(ac_avg_hz / ac_samples as f64));
                     log::info!(" - avg amplitude hi: {:?}", Volt(ac_avg_hi / ac_samples as f64));
                     log::info!(" - avg amplitude lo: {:?}", Volt(ac_avg_lo / ac_samples as f64));
