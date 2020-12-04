@@ -1,0 +1,9 @@
+[package]
+name = "oscilloscope"
+version = "0.1.0"
+authors = ["Alexey Voznyuk <me@swizard.info>"]
+edition = "2018"
+
+[dependencies]
+rpi_lfa = { git = "https://github.com/swizard0/rpi_lfa.git" }
+rpi_lfa_rppal = { git = "https://github.com/swizard0/rpi_lfa_rppal.git" }
