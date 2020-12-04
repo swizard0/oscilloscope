@@ -7,3 +7,7 @@ edition = "2018"
 [dependencies]
 rpi_lfa = { git = "https://github.com/swizard0/rpi_lfa.git" }
 rpi_lfa_rppal = { git = "https://github.com/swizard0/rpi_lfa_rppal.git" }
+
+log = "^0.4"
+structopt = "^0.3"
+pretty_env_logger = "^0.4"
